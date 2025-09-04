@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Statistik Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="admin-layout">
+    <div class="sidebar">
+      <div>
+        <h2>Admin Panel</h2>
+        <ul>
+          <li><a href="admin.html">Dashboard</a></li>
+          <li><a href="admin-stats.html" class="active">Statistik</a></li>
+          <li><a href="index.html">Lihat Website</a></li>
+        </ul>
+      </div>
+      <button id="logout-btn">Logout</button>
+    </div>
+
+    <div class="admin-content">
+      <h2>Statistik Website</h2>
+      <p>Total kunjungan: <b id="total-visits">0</b></p>
+      <div class="chart-container">
+        <canvas id="visitsChart" width="300" height="300"></canvas>
+      </div>
+      <ul id="page-stats"></ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>renderStats();</script>
+</body>
+</html>

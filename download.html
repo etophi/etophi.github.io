@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Download File</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Download File</h1>
+    <p>Pilih file untuk diunduh</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="download.html" class="active">Download</a>
+    <a href="login.html" style="margin-left:auto;font-size:12px;">Admin</a>
+  </nav>
+
+  <section>
+    <h2>File Tersedia</h2>
+    <ul id="file-list"></ul>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Andi Panguriseng</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    trackVisit("Download");
+    const fileList = document.getElementById("file-list");
+    const files = JSON.parse(localStorage.getItem("uploadedFiles")) || [];
+    function renderFiles() {
+      fileList.innerHTML = "";
+      files.forEach(f => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = f.data;
+        a.download = f.name;
+        a.textContent = f.name;
+        li.appendChild(a);
+        fileList.appendChild(li);
+      });
+    }
+    renderFiles();
+  </script>
+</body>
+</html>

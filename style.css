@@ -1,0 +1,84 @@
+/* ===== GLOBAL ===== */
+* { box-sizing: border-box; margin:0; padding:0; }
+body { font-family: 'Segoe UI', sans-serif; background:#f5f7fb; color:#333; line-height:1.6; }
+a { text-decoration:none; color:inherit; }
+ul { list-style:none; }
+
+/* ===== HEADER ===== */
+header {
+  background: linear-gradient(135deg,#1a73e8,#0d47a1);
+  color:white;
+  text-align:center;
+  padding:60px 20px;
+  border-bottom-left-radius:12px;
+  border-bottom-right-radius:12px;
+}
+header h1 { font-size:40px; margin-bottom:10px; }
+header p { font-size:18px; max-width:700px; margin:0 auto; }
+
+/* ===== NAVBAR ===== */
+nav {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  background:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  position:sticky; top:0; z-index:100;
+}
+nav a { padding:15px 20px; font-weight:bold; transition:all 0.3s; color:#333; }
+nav a:hover, nav a.active { color:#1a73e8; }
+
+/* ===== SECTIONS ===== */
+section { max-width:1000px; margin:50px auto; padding:0 20px; text-align:center; }
+section h2 { font-size:32px; color:#1a73e8; margin-bottom:30px; }
+
+/* ===== CARDS ===== */
+.projects { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+.card {
+  background:white; border-radius:12px; padding:20px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover { transform:translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.15); }
+.card h3 { color:#0d47a1; margin-bottom:10px; }
+
+/* ===== FORMS ===== */
+form { max-width:500px; margin:0 auto; display:flex; flex-direction:column; }
+form input, form textarea, form select {
+  padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ccc; font-size:14px;
+}
+form textarea { min-height:120px; }
+form button {
+  background:#1a73e8; color:white; border:none; padding:12px;
+  border-radius:8px; cursor:pointer; font-weight:bold; transition:background 0.3s;
+}
+form button:hover { background:#0d47a1; }
+
+/* ===== FOOTER ===== */
+footer {
+  background:#0d47a1; color:white; text-align:center; padding:25px 20px; margin-top:50px;
+}
+footer a { color:#fff; opacity:0.8; font-size:12px; text-decoration:underline; }
+
+/* ===== ADMIN ===== */
+.admin-layout { display:flex; min-height:100vh; }
+.sidebar {
+  width:240px; background:#1a73e8; color:white;
+  display:flex; flex-direction:column; justify-content:space-between; padding:25px 15px;
+}
+.sidebar h2 { font-size:22px; margin-bottom:25px; }
+.sidebar ul { padding:0; }
+.sidebar li { margin-bottom:15px; }
+.sidebar a, .sidebar button {
+  display:block; width:100%; text-align:left; color:white; padding:10px;
+  border-radius:6px; background:none; border:none; cursor:pointer; transition:background 0.3s; font-size:16px;
+}
+.sidebar a:hover, .sidebar a.active, .sidebar button:hover { background:rgba(255,255,255,0.2); }
+.admin-content { flex:1; background:#f5f7fb; padding:35px; }
+.admin-content h1,h2 { color:#1a73e8; margin-bottom:20px; }
+
+/* ===== CHART ===== */
+.chart-container { max-width:360px; margin:25px auto; }
+
+/* ===== MAP ===== */
+#map { height:600px; width:100%; border-radius:12px; margin:20px auto; max-width:1000px; }

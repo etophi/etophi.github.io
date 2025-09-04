@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>WebGIS - Portofolio Andi</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <header>
+    <h1>WebGIS Portofolio</h1>
+    <p>Peta interaktif proyek dan lokasi</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="about.html">Tentang</a>
+    <a href="projects.html">Proyek</a>
+    <a href="contact.html">Kontak</a>
+    <a href="download.html">Download</a>
+    <a href="webgis.html" class="active">WebGIS</a>
+    <a href="login.html" style="margin-left:auto;font-size:12px;">Admin</a>
+  </nav>
+
+  <section>
+    <div id="map"></div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Andi Panguriseng</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    trackVisit("WebGIS");
+
+    const map = L.map('map').setView([-6.200, 106.816], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      attribution:'&copy; OpenStreetMap contributors', maxZoom:19
+    }).addTo(map);
+
+    const projects=[
+      {name:"Proyek 1",lat:-6.200,lng:106.816,desc:"Deskripsi Proyek 1"},
+      {name:"Proyek 2",lat:-6.220,lng:106.830,desc:"Deskripsi Proyek 2"},
+      {name:"Proyek 3",lat:-6.210,lng:106.800,desc:"Deskripsi Proyek 3"}
+    ];
+    projects.forEach(p=>{
+      L.marker([p.lat,p.lng]).addTo(map).bindPopup("<b>"+p.name+"</b><br>"+p.desc);
+    });
+    L.circle([-6.215,106.815],{color:'red',fillColor:'#f03',fillOpacity:0.4,radius:500}).addTo(map).bindPopup("Area contoh");
+  </script>
+</body>
+</html>

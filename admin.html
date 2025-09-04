@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - Edit Halaman</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div>
+        <h2>Admin Panel</h2>
+        <ul>
+          <li><a href="admin.html" class="active">Edit Halaman</a></li>
+          <li><a href="admin-stats.html">Statistik</a></li>
+          <li><a href="index.html">Lihat Website</a></li>
+        </ul>
+      </div>
+      <button id="logout-btn">Logout</button>
+    </div>
+
+    <!-- KONTEN ADMIN -->
+    <div class="admin-content">
+      <h1>Edit Halaman</h1>
+      <form id="admin-form">
+        <label for="page-select">Pilih Halaman:</label>
+        <select id="page-select">
+          <option value="home">Beranda</option>
+          <option value="about">Tentang</option>
+          <option value="projects">Proyek</option>
+          <option value="contact">Kontak</option>
+          <option value="download">Download</option>
+          <option value="webgis">WebGIS</option>
+        </select>
+
+        <label for="title-input">Judul Halaman:</label>
+        <input type="text" id="title-input" required>
+
+        <label for="content-input">Konten Halaman:</label>
+        <textarea id="content-input" required></textarea>
+
+        <!-- UPLOAD FILE HANYA UNTUK HALAMAN DOWNLOAD -->
+        <div id="upload-section" style="display:none;">
+          <h3>Upload File</h3>
+          <input type="file" id="upload-input">
+          <button id="upload-btn" type="button">Upload</button>
+          <ul id="uploaded-list"></ul>
+        </div>
+
+        <button type="submit">Simpan Perubahan</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ===== CEK LOGIN =====
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if(isLoggedIn !== "true"){
+      alert("Silakan login!");
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("username");
+        window.location.href = "login.html";
+      });
+    }
+
+    // ===== ADMIN FORM =====
+    const adminForm = document.getElementById("admin-form");
+    const pageSelect = document.getElementById("page-select");
+    const titleInput = document.getElementById("title-input");
+    const contentInput = document.getElementById("content-input");
+    const uploadSection = document.getElementById("upload-section");
+    const uploadInput = document.getElementById("upload-input");
+    const uploadBtn = document.getElementById("upload-btn");
+    const uploadedList = document.getElementById("uploaded-list");
+
+    const pages = JSON.parse(localStorage.getItem("pages")) || {
+      home: {title:"Halo, ini website saya!", content:"Selamat datang di portofolio saya."},
+      about: {title:"Tentang Saya", content:"Halo! Nama saya Andi."},
+      projects: {title:"Proyek", content:"Proyek 1\nProyek 2\nProyek 3"},
+      contact: {title:"Kontak", content:"Email: andi@example.com\nInstagram: @andi"},
+      download: {title:"Download", content:"File tersedia"},
+      webgis: {title:"WebGIS", content:"Peta interaktif proyek"}
+    };
+
+    // Fungsi render daftar file
+    function renderUploaded() {
+      uploadedList.innerHTML = "";
+      const uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles")) || [];
+      uploadedFiles.forEach(f => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = f.data;
+        a.download = f.name;
+        a.textContent = f.name;
+        li.appendChild(a);
+        uploadedList.appendChild(li);
+      });
+    }
+
+    // Saat pilih halaman
+    function loadPage(p) {
+      titleInput.value = pages[p].title;
+      contentInput.value = pages[p].content;
+      if(p === "download") {
+        uploadSection.style.display = "block";
+        renderUploaded();
+      } else {
+        uploadSection.style.display = "none";
+      }
+    }
+
+    pageSelect.addEventListener("change", () => {
+      loadPage(pageSelect.value);
+    });
+    loadPage(pageSelect.value);
+
+    // Simpan perubahan halaman
+    adminForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const p = pageSelect.value;
+      pages[p].title = titleInput.value;
+      pages[p].content = contentInput.value;
+      localStorage.setItem("pages", JSON.stringify(pages));
+      alert("Perubahan tersimpan untuk halaman: " + p);
+    });
+
+    // Upload file
+    uploadBtn.addEventListener("click", () => {
+      if(uploadInput.files.length > 0){
+        const file = uploadInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(evt){
+          const uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles")) || [];
+          uploadedFiles.push({name:file.name, data:evt.target.result});
+          localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+          renderUploaded();
+          uploadInput.value = "";
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert("Pilih file terlebih dahulu!");
+      }
+    });
+  </script>
+</body>
+</html>
