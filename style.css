@@ -77,6 +77,26 @@ footer a { color:#fff; opacity:0.8; font-size:12px; text-decoration:underline; }
 .admin-content { flex:1; background:#f5f7fb; padding:35px; }
 .admin-content h1,h2 { color:#1a73e8; margin-bottom:20px; }
 
+/* ===== MUSIC PLAYER ===== */
+.music-player { max-width: 700px; margin: 30px auto; text-align: center; }
+#player-container { margin-bottom: 15px; }
+.controls { margin: 15px 0; display: flex; justify-content: center; gap: 10px; }
+.controls button { padding:10px 15px; font-size:16px; border:none; border-radius:6px; background:#1a73e8; color:white; cursor:pointer; transition: background 0.3s; }
+.controls button:hover { background:#0d47a1; }
+
+#playlist ul { list-style:none; padding:0; max-height:250px; overflow-y:auto; margin:0; }
+#playlist li { padding:8px 12px; margin:4px 0; background:#f0f0f0; border-radius:6px; cursor:pointer; transition: background 0.3s; }
+#playlist li.active { background:#1a73e8; color:white; font-weight:bold; }
+#playlist li:hover { background:#bbdefb; }
+
+/* ===== DARK THEME ===== */
+body.dark-theme { background:#121212; color:white; }
+body.dark-theme .music-player { color:white; }
+body.dark-theme .controls button { background:#333; color:white; }
+body.dark-theme #playlist li { background:#333; color:white; }
+body.dark-theme #playlist li:hover { background:#555; }
+
+
 /* ===== CHART ===== */
 .chart-container { max-width:360px; margin:25px auto; }
 
@@ -103,3 +123,4 @@ footer a { color:#fff; opacity:0.8; font-size:12px; text-decoration:underline; }
 .ol-popup:before {
   border-top-color:rgba(0,0,0,0.2); border-width:11px; left:50%; margin-left:-11px;
 }
+
