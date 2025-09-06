@@ -4,16 +4,15 @@
   <meta charset="UTF-8">
   <title>WebGIS - Portofolio Andi</title>
   <link rel="stylesheet" href="style.css">
-  <!-- OpenLayers CSS -->
+
+  <!-- OpenLayers CSS & JS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css">
-  <style>
-    #map { height: 600px; width: 100%; border-radius: 12px; margin: 20px auto; max-width: 1000px; }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/ol@latest/ol.js"></script>
 </head>
 <body>
   <header>
     <h1>WebGIS Portofolio</h1>
-    <p>Peta interaktif proyek dan lokasi (OpenLayers)</p>
+    <p>Peta interaktif proyek dan lokasi</p>
   </header>
 
   <nav>
@@ -23,7 +22,6 @@
     <a href="contact.html">Kontak</a>
     <a href="download.html">Download</a>
     <a href="webgis.html" class="active">WebGIS</a>
-    <a href="music.html">Musik</a>
     <a href="login.html" style="margin-left:auto;font-size:12px;">Admin</a>
   </nav>
 
@@ -35,13 +33,12 @@
     <p>&copy; 2025 Andi Panguriseng</p>
   </footer>
 
-  <!-- OpenLayers JS -->
-  <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
   <script src="script.js"></script>
   <script>
+    // Tracking kunjungan
     trackVisit("WebGIS");
 
-    // ===== BASE MAP =====
+    // Inisialisasi peta
     const map = new ol.Map({
       target: 'map',
       layers: [
@@ -55,47 +52,45 @@
       })
     });
 
-    // ===== DATA PROYEK =====
+    // Data proyek
     const projects = [
       {name:"Proyek 1",lat:-6.200,lng:106.816,desc:"Deskripsi Proyek 1"},
       {name:"Proyek 2",lat:-6.220,lng:106.830,desc:"Deskripsi Proyek 2"},
       {name:"Proyek 3",lat:-6.210,lng:106.800,desc:"Deskripsi Proyek 3"}
     ];
 
-    // ===== MARKER STYLE =====
-    const markerStyle = new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 7,
-        fill: new ol.style.Fill({color: 'red'}),
-        stroke: new ol.style.Stroke({color: '#fff', width: 2})
-      })
-    });
-
-    // ===== VECTOR SOURCE & LAYER =====
+    // Layer vector
     const features = projects.map(p => {
-      const feature = new ol.Feature({
+      return new ol.Feature({
         geometry: new ol.geom.Point(ol.proj.fromLonLat([p.lng, p.lat])),
         name: p.name,
         desc: p.desc
       });
-      feature.setStyle(markerStyle);
-      return feature;
     });
 
+    const vectorSource = new ol.source.Vector({ features });
     const vectorLayer = new ol.layer.Vector({
-      source: new ol.source.Vector({ features })
+      source: vectorSource,
+      style: new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: 7,
+          fill: new ol.style.Fill({ color: '#1a73e8' }),
+          stroke: new ol.style.Stroke({ color: '#fff', width: 2 })
+        })
+      })
     });
     map.addLayer(vectorLayer);
 
-    // ===== POPUP =====
-    const element = document.createElement("div");
-    element.className = "ol-popup";
-    element.style.cssText = "background:white;padding:5px 10px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.3);position:absolute;z-index:100;";
-    document.body.appendChild(element);
+    // Popup
+    const container = document.createElement('div');
+    container.className = 'ol-popup';
+    const content = document.createElement('div');
+    container.appendChild(content);
 
     const overlay = new ol.Overlay({
-      element: element,
-      autoPan: { animation: { duration: 250 } }
+      element: container,
+      autoPan: true,
+      autoPanAnimation: { duration: 250 }
     });
     map.addOverlay(overlay);
 
@@ -103,12 +98,22 @@
       const feature = map.forEachFeatureAtPixel(evt.pixel, f => f);
       if (feature) {
         const coordinates = feature.getGeometry().getCoordinates();
+        content.innerHTML = `<b>${feature.get('name')}</b><br>${feature.get('desc')}`;
         overlay.setPosition(coordinates);
-        element.innerHTML = `<b>${feature.get("name")}</b><br>${feature.get("desc")}`;
       } else {
         overlay.setPosition(undefined);
       }
     });
+
+    // Contoh area lingkaran
+    const circleFeature = new ol.Feature({
+      geometry: new ol.geom.Circle(ol.proj.fromLonLat([106.815, -6.215]), 500)
+    });
+    circleFeature.setStyle(new ol.style.Style({
+      stroke: new ol.style.Stroke({ color: 'red', width: 2 }),
+      fill: new ol.style.Fill({ color: 'rgba(255,0,0,0.3)' })
+    }));
+    vectorSource.addFeature(circleFeature);
   </script>
 </body>
 </html>
