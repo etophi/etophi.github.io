@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>EtoMusic - Putar Musik</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>EtoMusic</h1>
+    <p>Putar musik favorit Anda langsung di browser</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="music.html" class="active">Musik</a>
+    <a href="about.html">Tentang</a>
+    <a href="projects.html">Proyek</a>
+    <a href="contact.html">Kontak</a>
+    <a href="download.html">Download</a>
+    <a href="webgis.html">WebGIS</a>
+    <a href="login.html" style="margin-left:auto;font-size:12px;">Admin</a>
+  </nav>
+
+  <section>
+    <div class="music-player">
+      <div id="player-container">
+        <div id="player"></div>
+      </div>
+      <div class="controls">
+        <button id="prev">⏮️ Prev</button>
+        <button id="play">▶️ Play</button>
+        <button id="next">⏭️ Next</button>
+        <button id="theme-toggle">🌙/☀️</button>
+      </div>
+      <div id="playlist">
+        <ul id="song-list"></ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Andi Panguriseng</p>
+  </footer>
+
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="music.js"></script>
+</body>
+</html>
