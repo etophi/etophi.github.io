@@ -80,5 +80,26 @@ footer a { color:#fff; opacity:0.8; font-size:12px; text-decoration:underline; }
 /* ===== CHART ===== */
 .chart-container { max-width:360px; margin:25px auto; }
 
-/* ===== MAP ===== */
+/* ===== MAP (OpenLayers) ===== */
 #map { height:600px; width:100%; border-radius:12px; margin:20px auto; max-width:1000px; }
+
+/* Popup OL */
+.ol-popup {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  padding: 10px 15px;
+  min-width: 160px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  position: absolute;
+}
+.ol-popup:after, .ol-popup:before {
+  top: 100%; border: solid transparent; content:" "; height:0; width:0; position:absolute; pointer-events:none;
+}
+.ol-popup:after {
+  border-top-color:#fff; border-width:10px; left:50%; margin-left:-10px;
+}
+.ol-popup:before {
+  border-top-color:rgba(0,0,0,0.2); border-width:11px; left:50%; margin-left:-11px;
+}
