@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Halaman</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div>
+        <h2>Admin Panel</h2>
+        <ul>
+          <li><a href="admin.html">Dashboard</a></li>
+          <li><a href="admin-edit.html" class="active">Edit Halaman</a></li>
+          <li><a href="admin-add.html">Tambah Halaman</a></li>
+          <li><a href="admin-profile.html">Profil Saya</a></li>
+          <li><a href="admin-stats.html">Statistik</a></li>
+          <li><a href="index.html">Lihat Website</a></li>
+        </ul>
+      </div>
+      <button id="logout-btn">Logout</button>
+    </div>
+
+    <!-- Konten -->
+    <div class="admin-content">
+      <h1>Edit Halaman</h1>
+      <form id="admin-form">
+        <label for="page-select">Pilih Halaman:</label>
+        <select id="page-select">
+          <option value="home">Beranda</option>
+          <option value="about">Tentang</option>
+          <option value="projects">Proyek</option>
+          <option value="contact">Kontak</option>
+          <option value="download">Download</option>
+          <option value="webgis">WebGIS</option>
+        </select>
+
+        <label for="title-input">Judul Halaman:</label>
+        <input type="text" id="title-input" required>
+
+        <label for="content-input">Konten Halaman:</label>
+        <textarea id="content-input" required></textarea>
+
+        <button type="submit">Simpan Perubahan</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
