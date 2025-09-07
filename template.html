@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title id="page-title">Halaman</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 id="dynamic-title"></h1>
+    <p id="dynamic-content"></p>
+  </header>
+
+  <nav></nav>
+
+  <section>
+    <div id="page-container" style="padding:20px;"></div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Andi Panguriseng</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Ambil nama file halaman dari URL (misalnya "galeri.html" -> "galeri")
+    const pageKey = window.location.pathname.split("/").pop().replace(".html","");
+    const pages = loadPages();
+    if(pages[pageKey]){
+      document.title = pages[pageKey].title + " - Portofolio Andi";
+      document.getElementById("dynamic-title").textContent = pages[pageKey].title;
+      document.getElementById("dynamic-content").innerHTML = pages[pageKey].content.replace(/\n/g,"<br>");
+      document.getElementById("page-container").innerHTML = pages[pageKey].content.replace(/\n/g,"<br>");
+    }
+    trackVisit(pageKey);
+  </script>
+</body>
+</html>
