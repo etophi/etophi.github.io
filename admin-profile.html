@@ -2,41 +2,39 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin - Profil Saya</title>
+  <title>Profil Admin</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="admin-layout">
-    <!-- Sidebar -->
     <div class="sidebar">
       <div>
         <h2>Admin Panel</h2>
         <ul>
           <li><a href="admin.html">Dashboard</a></li>
-          <li><a href="admin-add.html">Tambah Halaman</a></li>
           <li><a href="admin-edit.html">Edit Halaman</a></li>
-          <li><a href="admin-stats.html">Statistik</a></li>
+          <li><a href="admin-add.html">Tambah Halaman</a></li>
           <li><a href="admin-profile.html" class="active">Profil Saya</a></li>
+          <li><a href="admin-stats.html">Statistik</a></li>
           <li><a href="index.html">Lihat Website</a></li>
         </ul>
       </div>
       <button id="logout-btn">Logout</button>
     </div>
 
-    <!-- Content -->
     <div class="admin-content">
-      <h2>Kelola Profil Saya</h2>
+      <h2>Profil Saya</h2>
       <form id="profile-form">
-        <label>Nama:</label>
-        <input type="text" id="profile-name" required>
-        
-        <label>Email:</label>
-        <input type="email" id="profile-email" required>
-        
-        <label>Deskripsi:</label>
-        <textarea id="profile-bio" required></textarea>
-        
+        <label>Foto Profil</label>
+        <input type="file" id="profile-photo" accept="image/*">
+        <div id="photo-preview" style="margin:10px 0;">
+          <img id="preview-img" src="" alt="Preview Foto" style="max-width:150px;border-radius:8px;display:none;">
+        </div>
+
+        <input type="text" id="profile-name" placeholder="Nama" required>
+        <input type="email" id="profile-email" placeholder="Email" required>
+        <textarea id="profile-bio" placeholder="Tentang saya"></textarea>
+
         <button type="submit">Simpan Profil</button>
       </form>
     </div>
@@ -44,37 +42,7 @@
 
   <script src="script.js"></script>
   <script>
-    // Cek login
-    if(localStorage.getItem("isLoggedIn") !== "true"){
-      alert("Silakan login dulu!");
-      window.location.href = "login.html";
-    }
-
-    // Ambil data profil
-    const profile = loadProfile();
-
-    // Prefill form
-    document.getElementById("profile-name").value = profile.name;
-    document.getElementById("profile-email").value = profile.email;
-    document.getElementById("profile-bio").value = profile.bio;
-
-    // Simpan perubahan
-    document.getElementById("profile-form").addEventListener("submit", function(e){
-      e.preventDefault();
-      const updated = {
-        name: document.getElementById("profile-name").value,
-        email: document.getElementById("profile-email").value,
-        bio: document.getElementById("profile-bio").value
-      };
-      saveProfile(updated);
-      alert("Profil berhasil diperbarui!");
-    });
-
-    // Logout
-    document.getElementById("logout-btn").addEventListener("click", function(){
-      localStorage.removeItem("isLoggedIn");
-      window.location.href = "login.html";
-    });
+    loadProfileForm();
   </script>
 </body>
 </html>
