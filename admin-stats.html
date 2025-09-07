@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Statistik Admin</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Panel - Statistik</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -12,9 +14,9 @@
       <div>
         <h2>Admin Panel</h2>
         <ul>
-          <li><a href="admin.html">Dashboard</a></li>
-          <li><a href="admin-stats.html" class="active">Statistik</a></li>
-          <li><a href="index.html">Lihat Website</a></li>
+          <li><a href="admin.html"><i class="fas fa-edit"></i> Edit Halaman</a></li>
+          <li><a href="admin-stats.html" class="active"><i class="fas fa-chart-pie"></i> Statistik</a></li>
+          <li><a href="index.html"><i class="fas fa-eye"></i> Lihat Website</a></li>
         </ul>
       </div>
       <button id="logout-btn">Logout</button>
@@ -31,6 +33,22 @@
   </div>
 
   <script src="script.js"></script>
-  <script>renderStats();</script>
+  <script>
+    // CEK LOGIN
+    const isLoggedIn2 = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn2 !== "true") {
+      alert("Silakan login!");
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("username");
+        window.location.href = "login.html";
+      });
+    }
+
+    // render stats (fungsi ada di script.js)
+    renderStats();
+  </script>
 </body>
 </html>
