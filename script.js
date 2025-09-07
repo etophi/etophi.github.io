@@ -91,3 +91,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+// === DATA PROFIL ===
+function loadProfile(){
+  return JSON.parse(localStorage.getItem("profile")) || {
+    name: "Andi Panguriseng",
+    email: "andi@example.com",
+    bio: "Halo, saya Andi. Ini adalah halaman profil default saya."
+  };
+}
+
+function saveProfile(profile){
+  localStorage.setItem("profile", JSON.stringify(profile));
+}
