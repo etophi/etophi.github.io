@@ -2,11 +2,12 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Profil Admin</title>
+  <title>Profil Saya</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="admin-layout">
+    <!-- Sidebar -->
     <div class="sidebar">
       <div>
         <h2>Admin Panel</h2>
@@ -22,18 +23,22 @@
       <button id="logout-btn">Logout</button>
     </div>
 
+    <!-- Konten -->
     <div class="admin-content">
-      <h2>Profil Saya</h2>
+      <h1>Profil Saya</h1>
       <form id="profile-form">
-        <label>Foto Profil</label>
-        <input type="file" id="profile-photo" accept="image/*">
-        <div id="photo-preview" style="margin:10px 0;">
-          <img id="preview-img" src="" alt="Preview Foto" style="max-width:150px;border-radius:8px;display:none;">
-        </div>
+        <label for="profile-name">Nama:</label>
+        <input type="text" id="profile-name" required>
 
-        <input type="text" id="profile-name" placeholder="Nama" required>
-        <input type="email" id="profile-email" placeholder="Email" required>
-        <textarea id="profile-bio" placeholder="Tentang saya"></textarea>
+        <label for="profile-bio">Bio:</label>
+        <textarea id="profile-bio" required></textarea>
+
+        <label for="profile-pic">Foto Profil:</label>
+        <input type="file" id="profile-pic" accept="image/*">
+
+        <div id="preview" style="margin:15px 0;">
+          <img id="preview-img" src="" alt="Preview" style="max-width:150px; border-radius:50%; display:none;">
+        </div>
 
         <button type="submit">Simpan Profil</button>
       </form>
@@ -41,8 +46,5 @@
   </div>
 
   <script src="script.js"></script>
-  <script>
-    loadProfileForm();
-  </script>
 </body>
 </html>
