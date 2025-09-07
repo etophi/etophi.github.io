@@ -2,19 +2,19 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title id="page-title">Halaman Dinamis</title>
+  <title>Halaman</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1 id="dynamic-title"></h1>
-    <p id="dynamic-content"></p>
+    <h1 id="page-title"></h1>
+    <p id="page-desc">Halaman dinamis</p>
   </header>
 
-  <nav></nav>
+  <nav id="main-nav"></nav>
 
   <section>
-    <div id="page-container" style="padding:20px;"></div>
+    <div id="page-content"></div>
   </section>
 
   <footer>
@@ -22,22 +22,5 @@
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    // Ambil query parameter ?page=
-    const urlParams = new URLSearchParams(window.location.search);
-    const pageKey = urlParams.get("page");
-
-    const pages = loadPages();
-    if(pageKey && pages[pageKey]){
-      document.title = pages[pageKey].title + " - Portofolio Andi";
-      document.getElementById("dynamic-title").textContent = pages[pageKey].title;
-      document.getElementById("dynamic-content").innerHTML = pages[pageKey].content.replace(/\n/g,"<br>");
-      document.getElementById("page-container").innerHTML = pages[pageKey].content.replace(/\n/g,"<br>");
-      trackVisit(pageKey);
-    } else {
-      document.getElementById("dynamic-title").textContent = "Halaman tidak ditemukan";
-      document.getElementById("dynamic-content").textContent = "Maaf, halaman ini belum tersedia.";
-    }
-  </script>
 </body>
 </html>
