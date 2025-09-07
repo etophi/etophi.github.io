@@ -1,85 +1,80 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin Panel - Profil</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    .profile-box { max-width:500px; margin:auto; text-align:center; }
-    .profile-box img { width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:12px; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin - Profil Saya</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="admin-layout">
+    <!-- Sidebar -->
     <div class="sidebar">
       <div>
         <h2>Admin Panel</h2>
         <ul>
-          <li><a href="admin.html"><i class="fas fa-edit"></i> Edit Halaman</a></li>
-          <li><a href="admin-add.html"><i class="fas fa-plus"></i> Tambah Halaman</a></li>
-          <li><a href="admin-profile.html" class="active"><i class="fas fa-user"></i> Profil</a></li>
-          <li><a href="admin-stats.html"><i class="fas fa-chart-pie"></i> Statistik</a></li>
+          <li><a href="admin.html">Dashboard</a></li>
+          <li><a href="admin-add.html">Tambah Halaman</a></li>
+          <li><a href="admin-edit.html">Edit Halaman</a></li>
+          <li><a href="admin-stats.html">Statistik</a></li>
+          <li><a href="admin-profile.html" class="active">Profil Saya</a></li>
+          <li><a href="index.html">Lihat Website</a></li>
         </ul>
       </div>
       <button id="logout-btn">Logout</button>
     </div>
 
+    <!-- Content -->
     <div class="admin-content">
-      <h1>Profil Admin</h1>
-      <div class="profile-box">
-        <img id="profile-img" src="https://via.placeholder.com/120" alt="Foto Profil" />
-        <h2 id="profile-name">Admin</h2>
-        <p><a href="about.html" target="_blank">Lihat Halaman Tentang</a></p>
-        <form id="profile-form">
-          <input type="text" id="input-name" placeholder="Nama" />
-          <input type="file" id="input-photo" accept="image/*" />
-          <button type="submit">Update Profil</button>
-        </form>
-      </div>
+      <h2>Kelola Profil Saya</h2>
+      <form id="profile-form">
+        <label>Nama:</label>
+        <input type="text" id="profile-name" required>
+        
+        <label>Email:</label>
+        <input type="email" id="profile-email" required>
+        
+        <label>Deskripsi:</label>
+        <textarea id="profile-bio" required></textarea>
+        
+        <button type="submit">Simpan Profil</button>
+      </form>
     </div>
   </div>
 
   <script src="script.js"></script>
   <script>
-    if(localStorage.getItem("isLoggedIn")!=="true"){
-      alert("Silakan login!"); window.location.href="login.html";
+    // Cek login
+    if(localStorage.getItem("isLoggedIn") !== "true"){
+      alert("Silakan login dulu!");
+      window.location.href = "login.html";
     }
-    document.getElementById("logout-btn").addEventListener("click", ()=>{
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("username");
-      window.location.href="login.html";
-    });
 
-    // load profile
-    const profileData = JSON.parse(localStorage.getItem("adminProfile")) || {name:"Admin", photo:""};
-    if(profileData.name) document.getElementById("profile-name").textContent = profileData.name;
-    if(profileData.photo) document.getElementById("profile-img").src = profileData.photo;
+    // Ambil data profil
+    const profile = loadProfile();
 
-    document.getElementById("profile-form").addEventListener("submit", e=>{
+    // Prefill form
+    document.getElementById("profile-name").value = profile.name;
+    document.getElementById("profile-email").value = profile.email;
+    document.getElementById("profile-bio").value = profile.bio;
+
+    // Simpan perubahan
+    document.getElementById("profile-form").addEventListener("submit", function(e){
       e.preventDefault();
-      const newName = document.getElementById("input-name").value.trim() || profileData.name;
-      const fileInput = document.getElementById("input-photo");
-      if(fileInput.files.length>0){
-        const reader = new FileReader();
-        reader.onload = function(evt){
-          const newPhoto = evt.target.result;
-          saveProfile(newName,newPhoto);
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        saveProfile(newName, profileData.photo);
-      }
+      const updated = {
+        name: document.getElementById("profile-name").value,
+        email: document.getElementById("profile-email").value,
+        bio: document.getElementById("profile-bio").value
+      };
+      saveProfile(updated);
+      alert("Profil berhasil diperbarui!");
     });
 
-    function saveProfile(name, photo){
-      const newProfile = {name, photo};
-      localStorage.setItem("adminProfile", JSON.stringify(newProfile));
-      document.getElementById("profile-name").textContent = name;
-      if(photo) document.getElementById("profile-img").src = photo;
-      alert("Profil diperbarui!");
-    }
+    // Logout
+    document.getElementById("logout-btn").addEventListener("click", function(){
+      localStorage.removeItem("isLoggedIn");
+      window.location.href = "login.html";
+    });
   </script>
 </body>
 </html>
