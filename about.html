@@ -7,11 +7,11 @@
 </head>
 <body>
   <header>
-    <h1 id="about-title">Tentang Saya</h1>
-    <p id="about-content">Profil saya akan tampil di bawah.</p>
+    <h1>Tentang Saya</h1>
+    <p>Profil dan informasi pribadi</p>
   </header>
 
-  <nav>
+  <nav id="nav-menu">
     <a href="index.html">Beranda</a>
     <a href="about.html" class="active">Tentang</a>
     <a href="projects.html">Proyek</a>
@@ -22,11 +22,9 @@
   </nav>
 
   <section>
-    <div class="card">
-      <h3 id="profile-name-display">Nama Saya</h3>
-      <img id="profile-pic-display" src="" alt="Foto Profil" style="max-width:200px; border-radius:50%; margin:15px 0; display:none;">
-      <p id="profile-bio-display">Bio saya akan tampil di sini.</p>
-    </div>
+    <h2>Profil Saya</h2>
+    <img id="about-photo" src="" alt="Foto Profil" style="max-width:200px; border-radius:50%; display:none;">
+    <div id="about-extra" style="margin-top:20px; font-size:16px;"></div>
   </section>
 
   <footer>
@@ -34,16 +32,5 @@
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    // Memuat data profil dari localStorage
-    const profile = JSON.parse(localStorage.getItem("profileData")) || {};
-    if(profile.name) document.getElementById("profile-name-display").textContent = profile.name;
-    if(profile.bio) document.getElementById("profile-bio-display").textContent = profile.bio;
-    if(profile.pic){
-      const img = document.getElementById("profile-pic-display");
-      img.src = profile.pic;
-      img.style.display = "block";
-    }
-  </script>
 </body>
 </html>
