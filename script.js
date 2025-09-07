@@ -1,115 +1,93 @@
-// ===== DATA HALAMAN =====
-const defaultPages = {
-  home: { title:"Halo, ini website saya!", content:"Selamat datang di portofolio saya." },
-  about: { title:"Tentang Saya", content:"Halo! Nama saya Andi, sedang belajar membuat website." },
-  projects: { title:"Proyek", content:"Proyek 1: Website\nProyek 2: Kalkulator\nProyek 3: Blog" },
-  contact: { title:"Kontak", content:"Email: andi@example.com\nInstagram: @andi" }
-};
+// -------------------
+// Helper: Pages Data
+// -------------------
 function loadPages() {
-  const saved = localStorage.getItem("pages");
-  return saved ? JSON.parse(saved) : defaultPages;
-}
-function savePages(pages){ localStorage.setItem("pages", JSON.stringify(pages)); }
-
-// ===== RENDER HALAMAN PUBLIK =====
-function renderPage(pageKey, titleId, contentId){
-  const pages = loadPages();
-  if(document.getElementById(titleId)) document.getElementById(titleId).textContent = pages[pageKey].title;
-  if(document.getElementById(contentId)) document.getElementById(contentId).innerHTML = pages[pageKey].content.replace(/\n/g,"<br>");
-}
-renderPage("home","site-title","site-content");
-renderPage("about","about-title","about-content");
-renderPage("projects","projects-title","projects-content");
-renderPage("contact","contact-title","contact-content");
-
-// ===== LOGIN =====
-const loginForm = document.getElementById("login-form");
-if(loginForm){
-  loginForm.addEventListener("submit",function(e){
-    e.preventDefault();
-    const user=document.getElementById("login-username").value;
-    const pass=document.getElementById("login-password").value;
-    const defaultUser="admin", defaultPass="1234";
-    if(user===defaultUser && pass===defaultPass){
-      localStorage.setItem("isLoggedIn","true");
-      localStorage.setItem("username",user);
-      window.location.href="admin.html";
-    } else { document.getElementById("login-message").textContent="Username atau password salah!"; }
-  });
+  return JSON.parse(localStorage.getItem("pages")) || {
+    index: { title: "Beranda", content: "Selamat datang di website saya!" },
+    about: { title: "Tentang", content: "Informasi tentang saya." },
+    projects: { title: "Proyek", content: "Daftar proyek saya." },
+    contact: { title: "Kontak", content: "Hubungi saya di sini." },
+    download: { title: "Download", content: "File yang bisa diunduh." },
+    webgis: { title: "WebGIS", content: "Peta interaktif proyek." }
+  };
 }
 
-// ===== ADMIN CEK LOGIN =====
-if(window.location.pathname.includes("admin.html") || window.location.pathname.includes("admin-stats.html")){
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  if(isLoggedIn!=="true"){ alert("Silakan login!"); window.location.href="login.html"; }
-  else {
-    const logoutBtn = document.getElementById("logout-btn");
-    if(logoutBtn) logoutBtn.addEventListener("click",()=>{ localStorage.removeItem("isLoggedIn"); localStorage.removeItem("username"); window.location.href="login.html"; });
-  }
+function savePages(pages) {
+  localStorage.setItem("pages", JSON.stringify(pages));
 }
 
-// ===== ADMIN FORM =====
-const adminForm=document.getElementById("admin-form");
-const pageSelect=document.getElementById("page-select");
-if(adminForm && pageSelect){
-  let pages = loadPages();
-  pageSelect.addEventListener("change",()=>{ const p=pageSelect.value; document.getElementById("title-input").value=pages[p].title; document.getElementById("content-input").value=pages[p].content; });
-  pageSelect.dispatchEvent(new Event("change"));
-  adminForm.addEventListener("submit",function(e){
-    e.preventDefault();
-    const p=pageSelect.value;
-    pages[p].title=document.getElementById("title-input").value;
-    pages[p].content=document.getElementById("content-input").value;
-    savePages(pages); alert("Perubahan tersimpan: "+p);
-  });
-}
+// -------------------
+// Login Admin
+// -------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const loginForm = document.getElementById("login-form");
+  if (loginForm) {
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const username = document.getElementById("login-username").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+      const msg = document.getElementById("login-message");
 
-// ===== TRACK KUNJUNGAN =====
-function trackVisit(page){ 
-  const stats=JSON.parse(localStorage.getItem("siteStats"))||{visits:0,pages:{}};
-  stats.visits++; stats.pages[page]=stats.pages[page]?stats.pages[page]+1:1;
-  localStorage.setItem("siteStats",JSON.stringify(stats));
-}
-
-// ===== RENDER STATISTIK =====
-function renderStats(){
-  const stats = JSON.parse(localStorage.getItem("siteStats"))||{visits:0,pages:{}};
-  document.getElementById("total-visits").textContent=stats.visits;
-  const list=document.getElementById("page-stats"); if(list){ list.innerHTML=""; for(let p in stats.pages){ const li=document.createElement("li"); li.textContent=`${p}: ${stats.pages[p]}`; list.appendChild(li); } }
-  const labels=Object.keys(stats.pages); const data=Object.values(stats.pages);
-  if(labels.length>0){
-    const ctx=document.getElementById("visitsChart").getContext("2d");
-    new Chart(ctx,{type:"pie",data:{labels:labels,datasets:[{label:"Kunjungan per Halaman",data:data,backgroundColor:["#1a73e8","#ff7043","#66bb6a","#fbc02d","#8e24aa"],borderColor:"#fff",borderWidth:2}]},options:{responsive:true,plugins:{legend:{position:"bottom"}}}});
-  }
-}
-
-// ===== UPLOAD / DOWNLOAD FILE =====
-const uploadForm=document.getElementById("upload-form");
-if(uploadForm){
-  const uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles"))||[];
-  const uploadedList = document.getElementById("uploaded-list");
-  function renderUploaded(){ uploadedList.innerHTML=""; uploadedFiles.forEach(f=>{ const li=document.createElement("li"); li.textContent=f.name; uploadedList.appendChild(li); }); }
-  renderUploaded();
-  uploadForm.addEventListener("submit",function(e){
-    e.preventDefault();
-    const fileInput=document.getElementById("upload-input"); if(fileInput.files.length>0){
-      const file=fileInput.files[0];
-      const reader=new FileReader();
-      reader.onload=function(evt){
-        uploadedFiles.push({name:file.name,data:evt.target.result});
-        localStorage.setItem("uploadedFiles",JSON.stringify(uploadedFiles));
-        renderUploaded(); fileInput.value="";
+      // default: admin / 1234
+      if (username === "admin" && password === "1234") {
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("username", username);
+        window.location.href = "admin.html";
+      } else {
+        msg.textContent = "Username atau password salah!";
       }
-      reader.readAsDataURL(file);
-    }
-  });
+    });
+  }
+});
+
+// -------------------
+// Statistik Kunjungan
+// -------------------
+function trackVisit(pageName) {
+  let stats = JSON.parse(localStorage.getItem("siteStats")) || { total: 0, pages: {} };
+  stats.total++;
+  stats.pages[pageName] = (stats.pages[pageName] || 0) + 1;
+  localStorage.setItem("siteStats", JSON.stringify(stats));
 }
 
-// ===== NAVBAR TOGGLE =====
-const navToggle = document.getElementById("nav-toggle");
-const navMenu = document.getElementById("nav-menu");
-if (navToggle && navMenu) {
-  navToggle.addEventListener("click", () => {
-    navMenu.classList.toggle("show");
-  });
+function renderStats() {
+  const stats = JSON.parse(localStorage.getItem("siteStats")) || { total: 0, pages: {} };
+  if (document.getElementById("total-visits")) {
+    document.getElementById("total-visits").textContent = stats.total;
+  }
+  if (document.getElementById("page-stats")) {
+    const ul = document.getElementById("page-stats");
+    ul.innerHTML = "";
+    for (let p in stats.pages) {
+      const li = document.createElement("li");
+      li.textContent = `${p}: ${stats.pages[p]} kunjungan`;
+      ul.appendChild(li);
+    }
+  }
+  if (document.getElementById("visitsChart") && typeof Chart !== "undefined") {
+    const ctx = document.getElementById("visitsChart").getContext("2d");
+    new Chart(ctx, {
+      type: "pie",
+      data: {
+        labels: Object.keys(stats.pages),
+        datasets: [{
+          data: Object.values(stats.pages),
+          backgroundColor: ["#1a73e8", "#e91e63", "#ff9800", "#4caf50", "#9c27b0", "#607d8b"]
+        }]
+      }
+    });
+  }
 }
+
+// -------------------
+// Navbar Responsive
+// -------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("nav-menu");
+  if (toggle && menu) {
+    toggle.addEventListener("click", () => {
+      menu.classList.toggle("show");
+    });
+  }
+});
