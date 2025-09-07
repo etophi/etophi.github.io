@@ -1,28 +1,45 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>WebGIS - Portofolio Andi</title>
-  <link rel="stylesheet" href="style.css">
-
-  <!-- OpenLayers CSS & JS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css">
-  <script src="https://cdn.jsdelivr.net/npm/ol@latest/ol.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WebGIS - EtoPhi</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- OpenLayers CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
+  <style>
+    /* peta sudah ditangani oleh style.css, tapi tambahkan sedikit styling spesifik */
+    #map { height:600px; margin:20px auto; border-radius:12px; max-width:1000px; }
+    .ol-popup {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.2);
+      min-width: 120px;
+    }
+  </style>
 </head>
-<body>
+<body onload="trackVisit('WebGIS')">
   <header>
     <h1>WebGIS Portofolio</h1>
     <p>Peta interaktif proyek dan lokasi</p>
   </header>
 
+  <!-- NAVBAR -->
   <nav>
-    <a href="index.html">Beranda</a>
-    <a href="about.html">Tentang</a>
-    <a href="projects.html">Proyek</a>
-    <a href="contact.html">Kontak</a>
-    <a href="download.html">Download</a>
-    <a href="webgis.html" class="active">WebGIS</a>
-    <a href="login.html" style="margin-left:auto;font-size:12px;">Admin</a>
+    <div class="nav-toggle" id="nav-toggle">
+      <span></span><span></span><span></span>
+    </div>
+    <ul id="nav-menu">
+      <li><a href="index.html"><i class="fas fa-home"></i><span>Beranda</span></a></li>
+      <li><a href="about.html"><i class="fas fa-user"></i><span>Tentang</span></a></li>
+      <li><a href="projects.html"><i class="fas fa-briefcase"></i><span>Proyek</span></a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i><span>Kontak</span></a></li>
+      <li><a href="download.html"><i class="fas fa-download"></i><span>Download</span></a></li>
+      <li><a href="webgis.html" class="active"><i class="fas fa-map"></i><span>WebGIS</span></a></li>
+      <li><a href="login.html"><i class="fas fa-lock"></i><span>Admin</span></a></li>
+    </ul>
   </nav>
 
   <section>
@@ -30,90 +47,80 @@
   </section>
 
   <footer>
-    <p>&copy; 2025 Andi Panguriseng</p>
+    <p>&copy; 2025 EtoPhi</p>
   </footer>
 
+  <!-- OpenLayers JS -->
+  <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
   <script src="script.js"></script>
   <script>
-    // Tracking kunjungan
-    trackVisit("WebGIS");
+    // Centang koordinat Jakarta sekitar -6.2, 106.816 (EPSG:4326)
+    const centerLonLat = [106.816, -6.200];
+    // convert to map projection (EPSG:3857)
+    const center = ol.proj.fromLonLat(centerLonLat);
 
-    // Inisialisasi peta
+    // Base OSM layer
+    const osmLayer = new ol.layer.Tile({
+      source: new ol.source.OSM()
+    });
+
+    // Vector layer untuk marker proyek
+    const projSource = new ol.source.Vector();
+    const projStyle = new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 8,
+        fill: new ol.style.Fill({color: '#1a73e8'}),
+        stroke: new ol.style.Stroke({color: '#fff', width: 2})
+      })
+    });
+
+    // daftar proyek (mirip contoh sebelumnya)
+    const projects = [
+      { name: "Proyek 1", lat: -6.200, lon: 106.816, desc: "Deskripsi Proyek 1" },
+      { name: "Proyek 2", lat: -6.220, lon: 106.830, desc: "Deskripsi Proyek 2" },
+      { name: "Proyek 3", lat: -6.210, lon: 106.800, desc: "Deskripsi Proyek 3" }
+    ];
+
+    projects.forEach(p => {
+      const feat = new ol.Feature({
+        geometry: new ol.geom.Point(ol.proj.fromLonLat([p.lon, p.lat])),
+        name: p.name,
+        description: p.desc
+      });
+      feat.setStyle(projStyle);
+      projSource.addFeature(feat);
+    });
+
+    const projLayer = new ol.layer.Vector({ source: projSource });
+
     const map = new ol.Map({
       target: 'map',
-      layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })
-      ],
+      layers: [osmLayer, projLayer],
       view: new ol.View({
-        center: ol.proj.fromLonLat([106.816, -6.200]), // Jakarta
+        center: center,
         zoom: 12
       })
     });
 
-    // Data proyek
-    const projects = [
-      {name:"Proyek 1",lat:-6.200,lng:106.816,desc:"Deskripsi Proyek 1"},
-      {name:"Proyek 2",lat:-6.220,lng:106.830,desc:"Deskripsi Proyek 2"},
-      {name:"Proyek 3",lat:-6.210,lng:106.800,desc:"Deskripsi Proyek 3"}
-    ];
-
-    // Layer vector
-    const features = projects.map(p => {
-      return new ol.Feature({
-        geometry: new ol.geom.Point(ol.proj.fromLonLat([p.lng, p.lat])),
-        name: p.name,
-        desc: p.desc
-      });
-    });
-
-    const vectorSource = new ol.source.Vector({ features });
-    const vectorLayer = new ol.layer.Vector({
-      source: vectorSource,
-      style: new ol.style.Style({
-        image: new ol.style.Circle({
-          radius: 7,
-          fill: new ol.style.Fill({ color: '#1a73e8' }),
-          stroke: new ol.style.Stroke({ color: '#fff', width: 2 })
-        })
-      })
-    });
-    map.addLayer(vectorLayer);
-
     // Popup
     const container = document.createElement('div');
     container.className = 'ol-popup';
-    const content = document.createElement('div');
-    container.appendChild(content);
-
     const overlay = new ol.Overlay({
       element: container,
-      autoPan: true,
-      autoPanAnimation: { duration: 250 }
+      offset: [0, -12],
+      positioning: 'bottom-center'
     });
     map.addOverlay(overlay);
 
     map.on('singleclick', function(evt) {
-      const feature = map.forEachFeatureAtPixel(evt.pixel, f => f);
-      if (feature) {
-        const coordinates = feature.getGeometry().getCoordinates();
-        content.innerHTML = `<b>${feature.get('name')}</b><br>${feature.get('desc')}`;
-        overlay.setPosition(coordinates);
-      } else {
-        overlay.setPosition(undefined);
+      overlay.setPosition(undefined);
+      const feature = map.forEachFeatureAtPixel(evt.pixel, function(f){ return f; });
+      if(feature) {
+        const coords = feature.getGeometry().getCoordinates();
+        container.innerHTML = '<b>' + feature.get('name') + '</b><br/>' + feature.get('description');
+        overlay.setPosition(coords);
       }
     });
-
-    // Contoh area lingkaran
-    const circleFeature = new ol.Feature({
-      geometry: new ol.geom.Circle(ol.proj.fromLonLat([106.815, -6.215]), 500)
-    });
-    circleFeature.setStyle(new ol.style.Style({
-      stroke: new ol.style.Stroke({ color: 'red', width: 2 }),
-      fill: new ol.style.Fill({ color: 'rgba(255,0,0,0.3)' })
-    }));
-    vectorSource.addFeature(circleFeature);
   </script>
 </body>
 </html>
