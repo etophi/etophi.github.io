@@ -4,66 +4,59 @@
   <meta charset="UTF-8">
   <title>Admin Panel</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="admin-layout">
-    <!-- SIDEBAR -->
     <div class="sidebar">
-      <div>
-        <h2>Admin Panel</h2>
-        <ul>
-          <li><a href="admin.html" class="active"><i class="fas fa-edit"></i> Edit Halaman</a></li>
-          <li><a href="admin-add.html"><i class="fas fa-plus"></i> Tambah Halaman</a></li>
-          <li><a href="admin-profile.html"><i class="fas fa-user"></i> Profil</a></li>
-          <li><a href="admin-stats.html"><i class="fas fa-chart-pie"></i> Statistik</a></li>
-          <li><a href="index.html"><i class="fas fa-eye"></i> Lihat Website</a></li>
-        </ul>
-      </div>
-      <button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <h2>Admin Panel</h2>
+      <ul>
+        <li><a href="admin.html" class="active">Edit Halaman</a></li>
+        <li><a href="admin-add.html">Tambah Halaman</a></li>
+        <li><a href="admin-profile.html">Profil</a></li>
+      </ul>
+      <button id="logout-btn">Logout</button>
     </div>
 
-    <!-- CONTENT ADMIN -->
     <div class="admin-content">
       <h1>Edit Halaman</h1>
       <form id="admin-form">
-        <label for="page-select">Pilih Halaman:</label>
+        <label>Pilih Halaman:</label>
         <select id="page-select"></select>
-
-        <label for="title-input">Judul Halaman:</label>
+        <label>Judul:</label>
         <input type="text" id="title-input" required>
-
-        <label for="content-input">Konten Halaman:</label>
+        <label>Konten:</label>
         <textarea id="content-input" required></textarea>
-
-        <button type="submit">Simpan Perubahan</button>
+        <button type="submit">Simpan</button>
       </form>
     </div>
   </div>
 
-  <script src="script.js"></script>
   <script>
-    // ===== CEK LOGIN =====
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if(isLoggedIn !== "true"){
+    // CEK LOGIN
+    if(localStorage.getItem("isLoggedIn") !== "true"){
       alert("Silakan login terlebih dahulu!");
       window.location.href = "login.html";
     }
 
-    // ===== LOGOUT =====
     document.getElementById("logout-btn").addEventListener("click", ()=>{
       localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("username");
       window.location.href = "login.html";
     });
 
-    // ===== LOAD HALAMAN =====
     const pageSelect = document.getElementById("page-select");
     const titleInput = document.getElementById("title-input");
     const contentInput = document.getElementById("content-input");
 
-    function loadPagesForAdmin(){
-      const pages = JSON.parse(localStorage.getItem("pages")) || {};
+    const defaultPages = {
+      index:{title:"Beranda",content:"Selamat datang"},
+      about:{title:"Tentang",content:"Tentang saya"},
+      projects:{title:"Proyek",content:"Daftar proyek"},
+      contact:{title:"Kontak",content:"Kontak saya"}
+    };
+    if(!localStorage.getItem("pages")) localStorage.setItem("pages", JSON.stringify(defaultPages));
+
+    function loadPages(){
+      const pages = JSON.parse(localStorage.getItem("pages"));
       pageSelect.innerHTML = "";
       for(const key in pages){
         const opt = document.createElement("option");
@@ -71,32 +64,27 @@
         opt.textContent = key.charAt(0).toUpperCase() + key.slice(1);
         pageSelect.appendChild(opt);
       }
-      // load halaman pertama
       loadPage(pageSelect.value);
     }
 
-    function loadPage(pageKey){
-      const pages = JSON.parse(localStorage.getItem("pages")) || {};
-      if(pages[pageKey]){
-        titleInput.value = pages[pageKey].title || "";
-        contentInput.value = pages[pageKey].content || "";
-      }
+    function loadPage(key){
+      const pages = JSON.parse(localStorage.getItem("pages"));
+      titleInput.value = pages[key].title;
+      contentInput.value = pages[key].content;
     }
 
-    pageSelect.addEventListener("change", ()=> loadPage(pageSelect.value));
+    pageSelect.addEventListener("change", ()=>loadPage(pageSelect.value));
 
-    // ===== SIMPAN PERUBAHAN =====
-    document.getElementById("admin-form").addEventListener("submit", (e)=>{
+    document.getElementById("admin-form").addEventListener("submit",(e)=>{
       e.preventDefault();
-      const pages = JSON.parse(localStorage.getItem("pages")) || {};
+      const pages = JSON.parse(localStorage.getItem("pages"));
       const key = pageSelect.value;
-      pages[key] = { title: titleInput.value, content: contentInput.value };
+      pages[key] = { title:titleInput.value, content:contentInput.value };
       localStorage.setItem("pages", JSON.stringify(pages));
-      alert("Perubahan tersimpan untuk halaman: " + key);
+      alert("Perubahan tersimpan!");
     });
 
-    // Inisialisasi select
-    loadPagesForAdmin();
+    loadPages();
   </script>
 </body>
 </html>
