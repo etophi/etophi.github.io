@@ -4,11 +4,22 @@
   <meta charset="UTF-8">
   <title>Tentang Saya</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .about-container {
+      max-width: 800px;
+      margin: 40px auto;
+      text-align: center;
+    }
+    .about-photo {
+      max-width: 180px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1 id="about-title"></h1>
-    <p id="about-content"></p>
+    <h1 id="about-title">Tentang Saya</h1>
   </header>
 
   <nav>
@@ -21,11 +32,9 @@
     <a href="login.html" style="margin-left:auto;font-size:12px;">Admin</a>
   </nav>
 
-  <section>
-    <div class="card">
-      <h3>Tentang Saya</h3>
-      <p>Saya Andi, sedang belajar membuat website portofolio modern menggunakan HTML, CSS, dan JavaScript.</p>
-    </div>
+  <section class="about-container">
+    <img id="about-photo" class="about-photo" src="" alt="Foto Profil">
+    <p id="about-content"></p>
   </section>
 
   <footer>
@@ -33,6 +42,15 @@
   </footer>
 
   <script src="script.js"></script>
-  <script>trackVisit("About");</script>
+  <script>
+    const pages = loadPages();
+    if (pages.about) {
+      document.getElementById("about-title").textContent = pages.about.title;
+      document.getElementById("about-content").textContent = pages.about.content;
+      if (pages.about.photo) {
+        document.getElementById("about-photo").src = pages.about.photo;
+      }
+    }
+  </script>
 </body>
 </html>
