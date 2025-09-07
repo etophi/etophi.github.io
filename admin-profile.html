@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Profil Saya</title>
+  <title>Admin - Profil</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,9 +13,8 @@
         <h2>Admin Panel</h2>
         <ul>
           <li><a href="admin.html">Dashboard</a></li>
-          <li><a href="admin-edit.html">Edit Halaman</a></li>
           <li><a href="admin-add.html">Tambah Halaman</a></li>
-          <li><a href="admin-profile.html" class="active">Profil Saya</a></li>
+          <li><a href="admin-profile.html" class="active">Profil</a></li>
           <li><a href="admin-stats.html">Statistik</a></li>
           <li><a href="index.html">Lihat Website</a></li>
         </ul>
@@ -25,20 +24,20 @@
 
     <!-- Konten -->
     <div class="admin-content">
-      <h1>Profil Saya</h1>
+      <h2>Edit Profil</h2>
       <form id="profile-form">
+        <label for="profile-pic">Foto Profil:</label>
+        <input type="file" id="profile-pic" accept="image/*">
+        <img id="preview-img" src="" alt="Preview Foto" style="max-width:150px; margin:10px 0; display:none;">
+
         <label for="profile-name">Nama:</label>
         <input type="text" id="profile-name" required>
 
+        <label for="profile-email">Email:</label>
+        <input type="email" id="profile-email" required>
+
         <label for="profile-bio">Bio:</label>
         <textarea id="profile-bio" required></textarea>
-
-        <label for="profile-pic">Foto Profil:</label>
-        <input type="file" id="profile-pic" accept="image/*">
-
-        <div id="preview" style="margin:15px 0;">
-          <img id="preview-img" src="" alt="Preview" style="max-width:150px; border-radius:50%; display:none;">
-        </div>
 
         <button type="submit">Simpan Profil</button>
       </form>
