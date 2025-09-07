@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title id="page-title">Halaman</title>
+  <title id="page-title">Halaman Dinamis</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,16 +23,21 @@
 
   <script src="script.js"></script>
   <script>
-    // Ambil nama file halaman dari URL (misalnya "galeri.html" -> "galeri")
-    const pageKey = window.location.pathname.split("/").pop().replace(".html","");
+    // Ambil query parameter ?page=
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageKey = urlParams.get("page");
+
     const pages = loadPages();
-    if(pages[pageKey]){
+    if(pageKey && pages[pageKey]){
       document.title = pages[pageKey].title + " - Portofolio Andi";
       document.getElementById("dynamic-title").textContent = pages[pageKey].title;
       document.getElementById("dynamic-content").innerHTML = pages[pageKey].content.replace(/\n/g,"<br>");
       document.getElementById("page-container").innerHTML = pages[pageKey].content.replace(/\n/g,"<br>");
+      trackVisit(pageKey);
+    } else {
+      document.getElementById("dynamic-title").textContent = "Halaman tidak ditemukan";
+      document.getElementById("dynamic-content").textContent = "Maaf, halaman ini belum tersedia.";
     }
-    trackVisit(pageKey);
   </script>
 </body>
 </html>
