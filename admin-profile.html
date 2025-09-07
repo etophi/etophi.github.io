@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <title>Admin Panel - Profil Saya</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .profile-preview {
+      max-width: 150px;
+      border-radius: 50%;
+      margin: 10px 0;
+    }
+  </style>
 </head>
 <body>
   <div class="admin-layout">
@@ -32,6 +39,11 @@
         <label for="profile-content">Konten Halaman:</label>
         <textarea id="profile-content" required></textarea>
 
+        <label for="profile-photo">Foto Profil:</label>
+        <input type="file" id="profile-photo" accept="image/*">
+
+        <img id="profile-preview" class="profile-preview" src="" alt="Foto Profil">
+
         <button type="submit">Simpan Perubahan</button>
       </form>
     </div>
@@ -41,15 +53,40 @@
   <script>
     let pages = loadPages();
 
-    // isi data profil dari halaman 'about'
+    // pastikan halaman about ada
+    if (!pages.about) {
+      pages.about = {title: "Tentang Saya", content: "Isi profil saya...", photo: ""};
+      savePages(pages);
+    }
+
+    // isi data awal
     document.getElementById("profile-title").value = pages.about.title;
     document.getElementById("profile-content").value = pages.about.content;
+    if (pages.about.photo) {
+      document.getElementById("profile-preview").src = pages.about.photo;
+    }
 
-    // simpan perubahan ke halaman about
+    // unggah foto & preview
+    document.getElementById("profile-photo").addEventListener("change", function(e){
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          document.getElementById("profile-preview").src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // simpan perubahan
     document.getElementById("profile-form").addEventListener("submit", function(e){
       e.preventDefault();
       pages.about.title = document.getElementById("profile-title").value;
       pages.about.content = document.getElementById("profile-content").value;
+      const photoSrc = document.getElementById("profile-preview").src;
+      if (photoSrc) {
+        pages.about.photo = photoSrc;
+      }
       savePages(pages);
       alert("✅ Profil berhasil diperbarui!");
     });
