@@ -158,3 +158,46 @@ function renderProfile(){
        <p>${savedProfile.bio || ""}</p>`;
   }
 }
+
+// ===== ADMIN PROFILE =====
+const profileForm = document.getElementById("profile-form");
+if(profileForm){
+  const nameInput = document.getElementById("profile-name");
+  const bioInput = document.getElementById("profile-bio");
+  const picInput = document.getElementById("profile-pic");
+  const previewImg = document.getElementById("preview-img");
+
+  // Load data lama
+  const profile = JSON.parse(localStorage.getItem("profileData")) || {};
+  if(profile.name) nameInput.value = profile.name;
+  if(profile.bio) bioInput.value = profile.bio;
+  if(profile.pic){
+    previewImg.src = profile.pic;
+    previewImg.style.display = "block";
+  }
+
+  // Preview foto
+  picInput.addEventListener("change", () => {
+    if(picInput.files && picInput.files[0]){
+      const reader = new FileReader();
+      reader.onload = e => {
+        previewImg.src = e.target.result;
+        previewImg.style.display = "block";
+      };
+      reader.readAsDataURL(picInput.files[0]);
+    }
+  });
+
+  // Simpan data
+  profileForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const newProfile = {
+      name: nameInput.value,
+      bio: bioInput.value,
+      pic: previewImg.src || ""
+    };
+    localStorage.setItem("profileData", JSON.stringify(newProfile));
+    alert("Profil berhasil disimpan!");
+  });
+}
+
