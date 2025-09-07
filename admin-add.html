@@ -1,39 +1,33 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Admin Panel - Tambah Halaman</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
   <div class="admin-layout">
-    <!-- SIDEBAR -->
     <div class="sidebar">
       <div>
         <h2>Admin Panel</h2>
         <ul>
-          <li><a href="admin.html">Edit Halaman</a></li>
-          <li><a href="admin-add.html" class="active">Tambah Halaman</a></li>
-          <li><a href="admin-stats.html">Statistik</a></li>
-          <li><a href="index.html">Lihat Website</a></li>
+          <li><a href="admin.html"><i class="fas fa-edit"></i> Edit Halaman</a></li>
+          <li><a href="admin-add.html" class="active"><i class="fas fa-plus"></i> Tambah Halaman</a></li>
+          <li><a href="admin-profile.html"><i class="fas fa-user"></i> Profil</a></li>
+          <li><a href="admin-stats.html"><i class="fas fa-chart-pie"></i> Statistik</a></li>
         </ul>
       </div>
       <button id="logout-btn">Logout</button>
     </div>
 
-    <!-- KONTEN -->
     <div class="admin-content">
       <h1>Tambah Halaman Baru</h1>
       <form id="add-page-form">
-        <label for="new-key">Nama Halaman (unik, huruf kecil tanpa spasi):</label>
-        <input type="text" id="new-key" required>
-
-        <label for="new-title">Judul Halaman:</label>
-        <input type="text" id="new-title" required>
-
-        <label for="new-content">Konten Halaman:</label>
-        <textarea id="new-content" required></textarea>
-
+        <input type="text" id="new-page-key" placeholder="Key halaman (misal: blog)" required />
+        <input type="text" id="new-page-title" placeholder="Judul halaman" required />
+        <textarea id="new-page-content" placeholder="Konten halaman..." required></textarea>
         <button type="submit">Tambah Halaman</button>
       </form>
     </div>
@@ -41,29 +35,27 @@
 
   <script src="script.js"></script>
   <script>
-    const addForm = document.getElementById("add-page-form");
-    addForm.addEventListener("submit", function(e){
+    if(localStorage.getItem("isLoggedIn")!=="true"){
+      alert("Silakan login!"); window.location.href="login.html";
+    }
+    document.getElementById("logout-btn").addEventListener("click", ()=>{
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("username");
+      window.location.href="login.html";
+    });
+
+    document.getElementById("add-page-form").addEventListener("submit", e=>{
       e.preventDefault();
-      let key = document.getElementById("new-key").value.trim();
-      let title = document.getElementById("new-title").value.trim();
-      let content = document.getElementById("new-content").value.trim();
-
-      if(!key.match(/^[a-z0-9\-]+$/)){
-        alert("❌ Nama halaman hanya boleh huruf kecil, angka, dan tanda '-' tanpa spasi!");
-        return;
-      }
-
-      let pages = loadPages();
-      if(pages[key]){
-        alert("❌ Halaman dengan nama ini sudah ada!");
-        return;
-      }
-
+      const key = document.getElementById("new-page-key").value.trim().toLowerCase();
+      const title = document.getElementById("new-page-title").value.trim();
+      const content = document.getElementById("new-page-content").value.trim();
+      if(!key){ alert("Key tidak boleh kosong!"); return; }
+      const pages = loadPages();
+      if(pages[key]){ alert("Halaman dengan key ini sudah ada!"); return; }
       pages[key] = { title, content };
       savePages(pages);
-
-      alert("✅ Halaman baru berhasil ditambahkan: " + key);
-      window.location.href = "admin.html";
+      alert("Halaman baru ditambahkan: "+key);
+      window.location.href="admin.html";
     });
   </script>
 </body>
