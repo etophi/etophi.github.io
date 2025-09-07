@@ -1,62 +1,46 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin Panel - Tambah Halaman</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8">
+  <title>Tambah Halaman</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="admin-layout">
+    <!-- Sidebar -->
     <div class="sidebar">
       <div>
         <h2>Admin Panel</h2>
         <ul>
-          <li><a href="admin.html"><i class="fas fa-edit"></i> Edit Halaman</a></li>
-          <li><a href="admin-add.html" class="active"><i class="fas fa-plus"></i> Tambah Halaman</a></li>
-          <li><a href="admin-profile.html"><i class="fas fa-user"></i> Profil</a></li>
-          <li><a href="admin-stats.html"><i class="fas fa-chart-pie"></i> Statistik</a></li>
+          <li><a href="admin.html">Dashboard</a></li>
+          <li><a href="admin-edit.html">Edit Halaman</a></li>
+          <li><a href="admin-add.html" class="active">Tambah Halaman</a></li>
+          <li><a href="admin-profile.html">Profil Saya</a></li>
+          <li><a href="admin-stats.html">Statistik</a></li>
+          <li><a href="index.html">Lihat Website</a></li>
         </ul>
       </div>
       <button id="logout-btn">Logout</button>
     </div>
 
+    <!-- Konten -->
     <div class="admin-content">
       <h1>Tambah Halaman Baru</h1>
-      <form id="add-page-form">
-        <input type="text" id="new-page-key" placeholder="Key halaman (misal: blog)" required />
-        <input type="text" id="new-page-title" placeholder="Judul halaman" required />
-        <textarea id="new-page-content" placeholder="Konten halaman..." required></textarea>
-        <button type="submit">Tambah Halaman</button>
+      <form id="add-form">
+        <label for="new-key">ID Halaman (unik, contoh: services):</label>
+        <input type="text" id="new-key" required>
+
+        <label for="new-title">Judul Halaman:</label>
+        <input type="text" id="new-title" required>
+
+        <label for="new-content">Konten Halaman:</label>
+        <textarea id="new-content" required></textarea>
+
+        <button type="submit">Tambahkan Halaman</button>
       </form>
     </div>
   </div>
 
   <script src="script.js"></script>
-  <script>
-    if(localStorage.getItem("isLoggedIn")!=="true"){
-      alert("Silakan login!"); window.location.href="login.html";
-    }
-    document.getElementById("logout-btn").addEventListener("click", ()=>{
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("username");
-      window.location.href="login.html";
-    });
-
-    document.getElementById("add-page-form").addEventListener("submit", e=>{
-      e.preventDefault();
-      const key = document.getElementById("new-page-key").value.trim().toLowerCase();
-      const title = document.getElementById("new-page-title").value.trim();
-      const content = document.getElementById("new-page-content").value.trim();
-      if(!key){ alert("Key tidak boleh kosong!"); return; }
-      const pages = loadPages();
-      if(pages[key]){ alert("Halaman dengan key ini sudah ada!"); return; }
-      pages[key] = { title, content };
-      savePages(pages);
-      alert("Halaman baru ditambahkan: "+key);
-      window.location.href="admin.html";
-    });
-  </script>
 </body>
 </html>
