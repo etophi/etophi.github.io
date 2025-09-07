@@ -2,14 +2,13 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tentang Saya</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Tentang Saya</h1>
-    <p>Profil singkat dan informasi personal</p>
+    <h1 id="about-title"></h1>
+    <p id="about-content"></p>
   </header>
 
   <nav>
@@ -23,9 +22,10 @@
   </nav>
 
   <section>
-    <h2>Profil Saya</h2>
-    <div id="profile-container">
-      <!-- Konten profil akan dimuat lewat script.js -->
+    <div class="card">
+      <h3>Profil Saya</h3>
+      <img id="about-photo" src="" alt="Foto Profil" style="max-width:200px;border-radius:12px;display:none;margin-bottom:15px;">
+      <p id="about-extra"></p>
     </div>
   </section>
 
@@ -35,18 +35,8 @@
 
   <script src="script.js"></script>
   <script>
-    // Ambil profil dari localStorage
-    const profile = loadProfile();
-    const container = document.getElementById("profile-container");
-
-    container.innerHTML = `
-      <div class="card">
-        <h3>${profile.name}</h3>
-        <p><strong>Email:</strong> ${profile.email}</p>
-        <p><strong>Deskripsi:</strong></p>
-        <p>${profile.bio}</p>
-      </div>
-    `;
+    renderPage("about","about-title","about-content");
+    renderProfile(); 
   </script>
 </body>
 </html>
