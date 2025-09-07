@@ -104,3 +104,57 @@ function loadProfile(){
 function saveProfile(profile){
   localStorage.setItem("profile", JSON.stringify(profile));
 }
+
+// ===== PROFIL =====
+function loadProfileForm(){
+  const savedProfile = JSON.parse(localStorage.getItem("profile")) || {};
+  if(savedProfile.photo){
+    const img = document.getElementById("preview-img");
+    img.src = savedProfile.photo;
+    img.style.display = "block";
+  }
+  if(savedProfile.name) document.getElementById("profile-name").value = savedProfile.name;
+  if(savedProfile.email) document.getElementById("profile-email").value = savedProfile.email;
+  if(savedProfile.bio) document.getElementById("profile-bio").value = savedProfile.bio;
+
+  const photoInput = document.getElementById("profile-photo");
+  photoInput.addEventListener("change", function(){
+    const file = this.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = function(e){
+        document.getElementById("preview-img").src = e.target.result;
+        document.getElementById("preview-img").style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  const form = document.getElementById("profile-form");
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    const profile = {
+      photo: document.getElementById("preview-img").src,
+      name: document.getElementById("profile-name").value,
+      email: document.getElementById("profile-email").value,
+      bio: document.getElementById("profile-bio").value
+    };
+    localStorage.setItem("profile", JSON.stringify(profile));
+    alert("Profil berhasil disimpan!");
+  });
+}
+
+function renderProfile(){
+  const savedProfile = JSON.parse(localStorage.getItem("profile")) || {};
+  if(savedProfile.photo){
+    const photo = document.getElementById("about-photo");
+    photo.src = savedProfile.photo;
+    photo.style.display = "block";
+  }
+  if(savedProfile.name || savedProfile.email || savedProfile.bio){
+    document.getElementById("about-extra").innerHTML =
+      `<b>${savedProfile.name || ""}</b><br>
+       <i>${savedProfile.email || ""}</i><br>
+       <p>${savedProfile.bio || ""}</p>`;
+  }
+}
