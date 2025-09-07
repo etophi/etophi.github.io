@@ -2,55 +2,41 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Tentang Saya</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tentang - EtoPhi</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    .about-container {
-      max-width: 800px;
-      margin: 40px auto;
-      text-align: center;
-    }
-    .about-photo {
-      max-width: 180px;
-      border-radius: 50%;
-      margin-bottom: 20px;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
+<body onload="trackVisit('Tentang')">
   <header>
     <h1 id="about-title">Tentang Saya</h1>
+    <p id="about-content">Halo! Nama saya Andi, sedang belajar membuat website.</p>
   </header>
 
+  <!-- NAVBAR -->
   <nav>
-    <a href="index.html">Beranda</a>
-    <a href="about.html" class="active">Tentang</a>
-    <a href="projects.html">Proyek</a>
-    <a href="contact.html">Kontak</a>
-    <a href="download.html">Download</a>
-    <a href="webgis.html">WebGIS</a>
-    <a href="login.html" style="margin-left:auto;font-size:12px;">Admin</a>
+    <div class="nav-toggle" id="nav-toggle">
+      <span></span><span></span><span></span>
+    </div>
+    <ul id="nav-menu">
+      <li><a href="index.html"><i class="fas fa-home"></i><span>Beranda</span></a></li>
+      <li><a href="about.html" class="active"><i class="fas fa-user"></i><span>Tentang</span></a></li>
+      <li><a href="projects.html"><i class="fas fa-briefcase"></i><span>Proyek</span></a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i><span>Kontak</span></a></li>
+      <li><a href="download.html"><i class="fas fa-download"></i><span>Download</span></a></li>
+      <li><a href="webgis.html"><i class="fas fa-map"></i><span>WebGIS</span></a></li>
+      <li><a href="login.html"><i class="fas fa-lock"></i><span>Admin</span></a></li>
+    </ul>
   </nav>
 
-  <section class="about-container">
-    <img id="about-photo" class="about-photo" src="" alt="Foto Profil">
-    <p id="about-content"></p>
+  <section>
+    <h2>Tentang Saya</h2>
+    <p>Saya suka teknologi, pemrograman, dan GIS.</p>
   </section>
 
   <footer>
-    <p>&copy; 2025 Andi Panguriseng</p>
+    <p>&copy; 2025 EtoPhi</p>
   </footer>
-
   <script src="script.js"></script>
-  <script>
-    const pages = loadPages();
-    if (pages.about) {
-      document.getElementById("about-title").textContent = pages.about.title;
-      document.getElementById("about-content").textContent = pages.about.content;
-      if (pages.about.photo) {
-        document.getElementById("about-photo").src = pages.about.photo;
-      }
-    }
-  </script>
 </body>
 </html>
