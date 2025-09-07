@@ -1,86 +1,61 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin Panel - Edit Halaman</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="admin-layout">
-    <!-- SIDEBAR -->
+    <!-- Sidebar -->
     <div class="sidebar">
       <div>
         <h2>Admin Panel</h2>
         <ul>
-          <li><a href="admin.html" class="active"><i class="fas fa-edit"></i> Edit Halaman</a></li>
-          <li><a href="admin-add.html"><i class="fas fa-plus"></i> Tambah Halaman</a></li>
-          <li><a href="admin-profile.html"><i class="fas fa-user"></i> Profil</a></li>
-          <li><a href="admin-stats.html"><i class="fas fa-chart-pie"></i> Statistik</a></li>
+          <li><a href="admin.html" class="active">Dashboard</a></li>
+          <li><a href="admin-edit.html">Edit Halaman</a></li>
+          <li><a href="admin-add.html">Tambah Halaman</a></li>
+          <li><a href="admin-profile.html">Profil Saya</a></li>
+          <li><a href="admin-stats.html">Statistik</a></li>
+          <li><a href="index.html">Lihat Website</a></li>
         </ul>
       </div>
       <button id="logout-btn">Logout</button>
     </div>
 
-    <!-- KONTEN -->
+    <!-- Konten -->
     <div class="admin-content">
-      <h1>Edit Halaman</h1>
-      <form id="admin-form">
-        <label for="page-select">Pilih Halaman:</label>
-        <select id="page-select"></select>
+      <h1>Selamat Datang, <span id="admin-username"></span>!</h1>
+      <p>Gunakan panel di samping untuk mengelola website Anda.</p>
 
-        <label for="title-input">Judul Halaman:</label>
-        <input type="text" id="title-input" required />
-
-        <label for="content-input">Konten Halaman:</label>
-        <textarea id="content-input" required></textarea>
-
-        <button type="submit">Simpan Perubahan</button>
-      </form>
+      <div class="card" style="max-width:500px;margin-top:20px;">
+        <h3>Profil Singkat</h3>
+        <img id="dashboard-photo" src="" alt="Foto Profil" style="max-width:120px;border-radius:50%;display:none;margin-bottom:10px;">
+        <p id="dashboard-profile"></p>
+        <a href="admin-profile.html" class="btn-link">Kelola Profil</a>
+      </div>
     </div>
   </div>
 
   <script src="script.js"></script>
   <script>
-    // Cek login
-    if(localStorage.getItem("isLoggedIn")!=="true"){
-      alert("Silakan login!"); 
-      window.location.href="login.html";
-    }
-    document.getElementById("logout-btn").addEventListener("click", ()=>{
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("username");
-      window.location.href="login.html";
-    });
+    // Tampilkan username admin
+    document.getElementById("admin-username").textContent = localStorage.getItem("username") || "Admin";
 
-    // Load halaman ke dropdown
-    const pages = loadPages();
-    const select = document.getElementById("page-select");
-    for(let key in pages){
-      const opt = document.createElement("option");
-      opt.value = key;
-      opt.textContent = key;
-      select.appendChild(opt);
+    // Tampilkan ringkasan profil
+    const savedProfile = JSON.parse(localStorage.getItem("profile")) || {};
+    if(savedProfile.photo){
+      const photo = document.getElementById("dashboard-photo");
+      photo.src = savedProfile.photo;
+      photo.style.display = "block";
     }
-
-    // Tampilkan data halaman yang dipilih
-    function loadPageData(key){
-      document.getElementById("title-input").value = pages[key].title;
-      document.getElementById("content-input").value = pages[key].content;
+    if(savedProfile.name || savedProfile.email){
+      document.getElementById("dashboard-profile").innerHTML =
+        `<b>${savedProfile.name || ""}</b><br>
+         <i>${savedProfile.email || ""}</i>`;
+    } else {
+      document.getElementById("dashboard-profile").textContent = "Belum ada profil yang disimpan.";
     }
-    select.addEventListener("change", ()=> loadPageData(select.value));
-    loadPageData(select.value);
-
-    // Simpan perubahan
-    document.getElementById("admin-form").addEventListener("submit", e=>{
-      e.preventDefault();
-      const key = select.value;
-      pages[key].title = document.getElementById("title-input").value;
-      pages[key].content = document.getElementById("content-input").value;
-      savePages(pages);
-      alert("Halaman '"+key+"' berhasil diperbarui!");
-    });
   </script>
 </body>
 </html>
