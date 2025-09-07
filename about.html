@@ -4,33 +4,47 @@
   <meta charset="UTF-8">
   <title>Tentang Saya</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome untuk ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+  <!-- HEADER -->
   <header>
     <h1>Tentang Saya</h1>
     <p>Profil dan informasi pribadi</p>
   </header>
 
-  <nav id="nav-menu">
-    <a href="index.html">Beranda</a>
-    <a href="about.html" class="active">Tentang</a>
-    <a href="projects.html">Proyek</a>
-    <a href="contact.html">Kontak</a>
-    <a href="download.html">Download</a>
-    <a href="webgis.html">WebGIS</a>
-    <a href="login.html" style="margin-left:auto;font-size:12px;">Admin</a>
+  <!-- NAVBAR -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html"><i class="fa fa-home"></i> <span>Beranda</span></a>
+      <a href="about.html" class="active"><i class="fa fa-user"></i> <span>Tentang</span></a>
+      <a href="projects.html"><i class="fa fa-briefcase"></i> <span>Proyek</span></a>
+      <a href="contact.html"><i class="fa fa-envelope"></i> <span>Kontak</span></a>
+      <a href="download.html"><i class="fa fa-download"></i> <span>Download</span></a>
+      <a href="webgis.html"><i class="fa fa-map"></i> <span>WebGIS</span></a>
+      <a href="login.html" class="nav-admin"><i class="fa fa-user-shield"></i> <span>Admin</span></a>
+    </div>
+    <button id="nav-toggle"><i class="fa fa-bars"></i></button>
   </nav>
 
+  <!-- KONTEN -->
   <section>
     <h2>Profil Saya</h2>
     <img id="about-photo" src="" alt="Foto Profil" style="max-width:200px; border-radius:50%; display:none;">
     <div id="about-extra" style="margin-top:20px; font-size:16px;"></div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 Andi Panguriseng</p>
   </footer>
 
+  <!-- SCRIPT -->
   <script src="script.js"></script>
+  <script>
+    // Tampilkan data profil
+    document.addEventListener("DOMContentLoaded", renderProfile);
+  </script>
 </body>
 </html>
