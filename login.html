@@ -4,33 +4,13 @@
   <meta charset="UTF-8">
   <title>Login Admin</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Font Awesome untuk ikon -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- HEADER -->
   <header>
     <h1>Login Admin</h1>
-    <p>Silakan masuk untuk mengelola website</p>
+    <p>Masukkan username dan password</p>
   </header>
 
-  <!-- NAVBAR -->
-  <nav>
-    <div class="nav-toggle" id="nav-toggle">
-      <span></span><span></span><span></span>
-    </div>
-    <ul id="nav-menu">
-      <li><a href="index.html"><i class="fas fa-home"></i><span>Beranda</span></a></li>
-      <li><a href="about.html"><i class="fas fa-user"></i><span>Tentang</span></a></li>
-      <li><a href="projects.html"><i class="fas fa-briefcase"></i><span>Proyek</span></a></li>
-      <li><a href="contact.html"><i class="fas fa-envelope"></i><span>Kontak</span></a></li>
-      <li><a href="download.html"><i class="fas fa-download"></i><span>Download</span></a></li>
-      <li><a href="webgis.html"><i class="fas fa-map"></i><span>WebGIS</span></a></li>
-      <li><a href="login.html" class="active"><i class="fas fa-lock"></i><span>Admin</span></a></li>
-    </ul>
-  </nav>
-
-  <!-- LOGIN FORM -->
   <section>
     <form id="login-form" class="card">
       <input type="text" id="login-username" placeholder="Username" required>
@@ -40,15 +20,22 @@
     </form>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2025 Andi Panguriseng</p>
-  </footer>
-
-  <!-- SCRIPT -->
-  <script src="script.js"></script>
   <script>
-    trackVisit("Login");
+    const loginForm = document.getElementById("login-form");
+    loginForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      const username = document.getElementById("login-username").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+      const msg = document.getElementById("login-message");
+
+      // default admin
+      if(username === "admin" && password === "1234"){
+        localStorage.setItem("isLoggedIn","true");
+        window.location.href = "admin.html";
+      } else {
+        msg.textContent = "Username atau password salah!";
+      }
+    });
   </script>
 </body>
 </html>
