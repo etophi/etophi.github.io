@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login Admin - EtoPhi</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    .login-wrapper { max-width:420px; margin:60px auto; text-align:center; }
-    #login-message { color:#d32f2f; min-height:20px; margin-top:8px; }
-  </style>
+  <meta charset="UTF-8">
+  <title>Login Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome untuk ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <header><h1>Login Admin</h1></header>
+  <!-- HEADER -->
+  <header>
+    <h1>Login Admin</h1>
+    <p>Silakan masuk untuk mengelola website</p>
+  </header>
 
+  <!-- NAVBAR -->
   <nav>
     <div class="nav-toggle" id="nav-toggle">
       <span></span><span></span><span></span>
@@ -29,26 +30,25 @@
     </ul>
   </nav>
 
-  <section class="login-wrapper">
-    <form id="login-form">
+  <!-- LOGIN FORM -->
+  <section>
+    <form id="login-form" class="card">
       <input type="text" id="login-username" placeholder="Username" required>
       <input type="password" id="login-password" placeholder="Password" required>
       <button type="submit">Login</button>
-      <p id="login-message"></p>
+      <p id="login-message" class="error"></p>
     </form>
   </section>
 
+  <!-- FOOTER -->
   <footer>
-    <p>&copy; 2025 EtoPhi</p>
+    <p>&copy; 2025 Andi Panguriseng</p>
   </footer>
 
+  <!-- SCRIPT -->
   <script src="script.js"></script>
   <script>
-    // opsional: jika sudah login, langsung ke admin
-    if(localStorage.getItem("isLoggedIn")==="true"){
-      // jangan otomatis redirect bila ingin logout manual - ini hanya navigasi cepat
-      // window.location.href = "admin.html";
-    }
+    trackVisit("Login");
   </script>
 </body>
 </html>
